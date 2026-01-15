@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>لوحة الأستاذ</h2>
+<button onclick="logout()">Logout</button>
+
+<div id="messages"></div>
+
+<input id="msg" placeholder="اكتب رسالة للجميع">
+<button onclick="send()">إرسال للجميع</button>
+<script>
+    
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(!user || user.role !== "admin"){
+    window.location.href = "/login";
+}
+    </script>
+    
+<script src="/socket.io/socket.io.js"></script>
+<script src="/script-chat.js"></script>
+</body>
+</html>

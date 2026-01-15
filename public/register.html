@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <h2>إنشاء حساب جديد</h2>
+    <p class="sub">ابدأ رحلتك معنا</p>
+
+    <input id="username" placeholder="اسم المستخدم">
+    <input id="password" type="password" placeholder="كلمة المرور">
+
+    <select id="role">
+        <option value="student">طالب</option>
+        <option value="admin">أستاذ</option>
+    </select>
+
+    <button id="btn">تسجيل الحساب</button>
+
+    <div class="link">
+        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("btn").addEventListener("click", register);
+
+function register() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+
+    if(!username || !password) {
+        alert("المرجو إدخال جميع الحقول");
+        return;
+    }
+
+    fetch("/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password, role})
+    })
+    .then(res => res.text())
+    .then(msg => {
+        if(msg === "ok") {
+            alert("تم التسجيل بنجاح!");
+            window.location.href = "login.html";
+        } else {
+            alert("حدث خطأ أثناء التسجيل");
+        }
+    })
+    .catch(err => console.log(err));
+}
+</script>
+
+</body>
+</html>
