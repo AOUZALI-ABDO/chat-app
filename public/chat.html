@@ -1,32 +1,34 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat Student</title>
-<link rel="stylesheet" href="style.css">
 
-    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Student</title>
+    <link rel="stylesheet" href="style.css">
+
+
 </head>
+
 <body>
 
-    <h2>الشات</h2>
+    <h2>Chat Student</h2>
     <button id="logout-btn" onclick="logout()">Logout</button>
-    
+
     <div id="messages"></div>
-    
+
     <div id="msg-container">
         <input id="msg" placeholder="اكتب رسالة">
         <button onclick="send()">إرسال</button>
     </div>
-    
+
     <script>
         const user = JSON.parse(localStorage.getItem("user"));
-        if(!user){
+        if (!user) {
             window.location.href = "/login.html";
         }
-    
+
         function logout() {
             localStorage.removeItem("user");
             window.location.href = "login.html";
@@ -34,11 +36,7 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script-chat.js"></script>
-    
+
 </body>
+
 </html>
-
-
-
-
-
