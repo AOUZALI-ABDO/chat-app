@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Student</title>
     <link rel="stylesheet" href="style.css">
-
-
 </head>
 
 <body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            <h2>Chat Student</h2>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
 
-    <h2>Chat Student</h2>
-    <p>hello in chat student</p>
-    <button id="logout-btn" onclick="logout()">Logout</button>
+        <div id="messages"></div>
 
-    <div id="messages"></div>
-
-    <div id="msg-container">
-        <input id="msg" placeholder="اكتب رسالة">
-        <button onclick="send()">إرسال</button>
+        <div id="msg-container">
+            <input id="msg" placeholder="Écrivez un message" autocomplete="off">
+            <button onclick="send()">Envoyer</button>
+        </div>
     </div>
 
     <script>
@@ -37,7 +37,6 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script-chat.js"></script>
-
 </body>
 
 </html>

@@ -7,41 +7,76 @@
 <title>Create Account</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="login-page">
 
-<div class="login-container">
+<div class="login-wrapper">
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Créer un compte</h2>
+            <p class="sub">Inscrivez-vous pour commencer</p>
+        </div>
 
-    <h2>إنشاء حساب جديد</h2>
-    <p class="sub">ابدأ رحلتك معنا</p>
+        <form class="login-form" onsubmit="event.preventDefault(); register();">
+            <div class="input-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input id="username" type="text" placeholder="Choisissez un nom d'utilisateur" autocomplete="username" required>
+            </div>
 
-    <input id="username" placeholder="اسم المستخدم">
-    <input id="password" type="password" placeholder="كلمة المرور">
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" type="password" placeholder="Créez un mot de passe sécurisé" autocomplete="new-password" required>
+            </div>
 
-    <select id="role">
-        <option value="student">طالب</option>
-        <option value="admin">أستاذ</option>
-    </select>
+            <div class="input-group">
+                <label for="role">Type de compte</label>
+                <select id="role" required>
+                    <option value="student">Étudiant</option>
+                    <option value="admin">Professeur</option>
+                </select>
+            </div>
 
-    <button id="btn">تسجيل الحساب</button>
+            <div id="error" class="error-message"></div>
+            <div id="success" class="success-message"></div>
 
-    <div class="link">
-        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+            <button type="submit" class="login-btn register-btn">
+                <span>Enregistrer le compte</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <path d="M20 8v6M23 11h-6"></path>
+                </svg>
+            </button>
+        </form>
+
+        <div class="link">
+            Vous avez déjà un compte ? <a href="login.html">Se connecter</a>
+        </div>
     </div>
-
 </div>
 
 <script>
-document.getElementById("btn").addEventListener("click", register);
-
 function register() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
     const role = document.getElementById("role").value;
 
-    if(!username || !password) {
-        alert("المرجو إدخال جميع الحقول");
+    const errorEl = document.getElementById("error");
+    const successEl = document.getElementById("success");
+    const registerBtn = document.querySelector(".register-btn");
+    const originalText = registerBtn.innerHTML;
+
+    errorEl.textContent = "";
+    successEl.textContent = "";
+
+    if (!username || !password) {
+        errorEl.textContent = "S'il vous plaît, entrez tous les champs";
         return;
     }
+
+    // État de chargement
+    registerBtn.disabled = true;
+    registerBtn.innerHTML = '<span>Création du compte...</span>';
+    registerBtn.style.opacity = '0.7';
 
     fetch("/register", {
         method: "POST",
@@ -51,14 +86,39 @@ function register() {
     .then(res => res.text())
     .then(msg => {
         if(msg === "ok") {
-            alert("تم التسجيل بنجاح!");
-            window.location.href = "login.html";
+            successEl.textContent = "La création du compte a été réussie! Redirection...";
+            registerBtn.innerHTML = '<span>Succès!</span>';
+            
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
         } else {
-            alert("حدث خطأ أثناء التسجيل");
+            errorEl.textContent = "Une erreur est survenue lors de la création du compte";
+            registerBtn.disabled = false;
+            registerBtn.innerHTML = originalText;
+            registerBtn.style.opacity = '1';
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        console.log(err);
+        errorEl.textContent = "Erreur de connexion au serveur";
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = originalText;
+        registerBtn.style.opacity = '1';
+    });
 }
+
+// Support de la touche Enter
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('.login-container input, .login-container select');
+    inputs.forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                register();
+            }
+        });
+    });
+});
 </script>
 
 </body>

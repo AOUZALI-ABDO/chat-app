@@ -11,7 +11,7 @@ function registerUser() {
     successEl.textContent = "";
 
     if (!username || !password) {
-        errorEl.textContent = "جميع الحقول مطلوبة!";
+        errorEl.textContent = "Tous les champs sont obligatoires!";
         return;
     }
 
@@ -23,15 +23,15 @@ function registerUser() {
     .then(res => res.text())
     .then(data => {
         if (data === "ok") {
-            successEl.textContent = "تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.";
+            successEl.textContent = "Inscription réussie! Vous pouvez maintenant vous connecter.";
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
         } else {
-            errorEl.textContent = "حدث خطأ أثناء التسجيل.";
+            errorEl.textContent = "Une erreur s'est produite lors de l'inscription.";
         }
     })
     .catch(err => {
         console.log(err);
-        errorEl.textContent = "حدث خطأ في الاتصال بالسيرفر.";
+        errorEl.textContent = "Une erreur s'est produite lors de la connexion au serveur.";
     });
 }

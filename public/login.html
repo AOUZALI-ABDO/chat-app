@@ -9,22 +9,40 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="login-page">
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-header">
+                
+                <h2>Bienvenue</h2>
+                <p class="sub">Inscrivez-vous pour commencer</p>
+            </div>
 
-    <div class="login-container">
+            <form class="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" placeholder="Enter your username" autocomplete="username" required>
+                </div>
 
-        <h2>Welcome</h2>
-        <p class="sub">Sign in to continue</p>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+                </div>
 
-        <input id="username" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
+                <div id="error" class="error-message"></div>
 
-        <button onclick="login()">Login</button>
+                <button type="submit" class="login-btn">
+                    <span>Login</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
 
-        <div class="link">
-            Don't have an account? <a href="/register">Create one</a>
+            <div class="link">
+                j'ai pas de compte ? <a href="/register">Créer un compte</a>
+            </div>
         </div>
-
     </div>
 
     <script src="scripte-login.js"></script>

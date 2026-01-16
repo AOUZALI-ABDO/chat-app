@@ -10,17 +10,21 @@
 </head>
 
 <body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            <h2>Professor Chat</h2>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
 
-    <h2> professor Chat</h2>
-    <button onclick="logout()">Logout</button>
+        <div id="messages"></div>
 
-    <div id="messages"></div>
+        <div id="msg-container">
+            <input id="msg" placeholder="Écrivez un message à tous..." autocomplete="off">
+            <button onclick="send()">Envoyer</button>
+        </div>
+    </div>
 
-    <input id="msg" placeholder="اكتب رسالة للجميع">
-    <button onclick="send()">إرسال للجميع</button>
     <script>
-
-
         const user = JSON.parse(localStorage.getItem("user"));
         if (!user || user.role !== "admin") {
             window.location.href = "/login";

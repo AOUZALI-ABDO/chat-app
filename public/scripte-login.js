@@ -1,35 +1,74 @@
-document.getElementById("btn").addEventListener("click", login);
-
+// Fonction de connexion
 function login() {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
+    const errorEl = document.getElementById("error");
+
+    
+    errorEl.textContent = "";
 
     if (!username || !password) {
-        alert("الرجاء إدخال جميع الحقول");
+        errorEl.textContent = "Veuillez remplir tous les champs";
         return;
     }
+
+    const loginBtn = document.querySelector(".login-btn");
+    const originalText = loginBtn.innerHTML;
+    
+   
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<span>Vérification en cours...</span>';
+    loginBtn.style.opacity = '0.7';
 
     fetch("/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ username, password })
     })
-    .then(res => res.text()) // لاحظ هنا text() وليس json() إذا السيرفر يرجع "error" أو نص
+    .then(res => res.text())
     .then(data => {
         if (data === "error") {
-            alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
+            errorEl.textContent = "Nom d'utilisateur ou mot de passe incorrect!";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = originalText;
+            loginBtn.style.opacity = '1';
         } else {
-            const user = JSON.parse(data); // إذا السيرفر رجع JSON
+            const user = JSON.parse(data);
             localStorage.setItem("user", JSON.stringify(user));
-            if (user.role === "admin") {
-                window.location.href = "admin.html";
-            } else {
-                window.location.href = "chat.html";
-            }
+            
+            // Masquer le message d'erreur en cas de succès
+            errorEl.textContent = "";
+            
+            // Afficher le message de succès
+            loginBtn.innerHTML = '<span>Connexion réussie!</span>';
+            
+            // Rediriger vers la page appropriée
+            setTimeout(() => {
+                if (user.role === "admin") {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "chat.html";
+                }
+            }, 500);
         }
     })
     .catch(err => {
         console.log(err);
-        alert("حدث خطأ في الاتصال بالسيرفر");
+        errorEl.textContent = "Une erreur s'est produite lors de la connexion au serveur";
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = originalText;
+        loginBtn.style.opacity = '1';
     });
 }
+
+// Support de la touche Enter pour envoyer le formulaire
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('.login-container input');
+    inputs.forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    });
+});
